@@ -21,7 +21,7 @@ public class LoginResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response loginUser(UserDTO user) {
-        UserDTO authenticatedUser = UserDAO.getUser(user.getUser(), user.getPassword());
+        UserDTO authenticatedUser = userDAO.getUser(user.getUser(), user.getPassword());
 
         if (authenticatedUser != null) {
             return Response.ok().entity(new TokenDTO(user)).build();
