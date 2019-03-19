@@ -3,6 +3,8 @@ package net.sanstech;
 import net.sanstech.dto.ErrorDTO;
 import net.sanstech.dto.TokenDTO;
 import net.sanstech.dto.UserDTO;
+import net.sanstech.persistence.SpotitubePersistenceException;
+import net.sanstech.persistence.TokenDAO;
 import net.sanstech.persistence.UserDAO;
 
 import javax.ws.rs.Consumes;
@@ -16,6 +18,7 @@ import javax.ws.rs.core.Response;
 public class LoginResource {
 
     private UserDAO userDAO = new UserDAO();
+    private TokenDAO tokenDAO = new TokenDAO();
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +27,7 @@ public class LoginResource {
         UserDTO authenticatedUser = userDAO.getUser(user.getUser(), user.getPassword());
 
         if (authenticatedUser != null) {
-            return Response.ok().entity(new TokenDTO(user)).build();
+            return Response.ok().entity(tokenDAO.getToken(user.getUser())).build();
         } else {
             return Response.ok().entity(new ErrorDTO("Login failed for user.")).build();
         }

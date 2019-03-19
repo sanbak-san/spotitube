@@ -4,11 +4,15 @@ package net.sanstech;
 import net.sanstech.dto.TokenDTO;
 import net.sanstech.dto.UserDTO;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 public class LoginResourceTest {
 
     private LoginResource sut;
@@ -21,6 +25,8 @@ public class LoginResourceTest {
     @Test
     public void loginUser() {
         UserDTO userDTO = new UserDTO("Test", "User");
+
+//        Mockito.when
         Response actualResult = sut.loginUser((userDTO));
         assertEquals(Response.Status.OK.getStatusCode(), actualResult.getStatus());
         TokenDTO actualToken = (TokenDTO) actualResult.getEntity();

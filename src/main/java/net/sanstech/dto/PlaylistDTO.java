@@ -1,10 +1,16 @@
 package net.sanstech.dto;
 
+import net.sanstech.persistence.TrackDAO;
+
+import java.util.ArrayList;
+
 public class PlaylistDTO {
     private int id;
     private String name;
     private boolean owner;
-    private TrackDTO[] tracks;
+    private ArrayList<TrackDTO> tracks = new ArrayList<>();
+
+    private TrackDAO trackDAO = new TrackDAO();
 
     public PlaylistDTO() {
         this.id = 2;
@@ -16,6 +22,8 @@ public class PlaylistDTO {
         this.id = id;
         this.name = name;
         this.owner = owner;
+        tracks = new ArrayList<>();
+        //tracks.add(trackDAO.getTrack(1));
     }
 
     public int getId() {
@@ -42,11 +50,15 @@ public class PlaylistDTO {
         this.owner = owner;
     }
 
-    public TrackDTO[] getTracks() {
+    public ArrayList<TrackDTO> getTracks() {
         return tracks;
     }
 
-    public void setTracks(TrackDTO[] tracks) {
+    public void setTracks(ArrayList<TrackDTO> tracks) {
         this.tracks = tracks;
+    }
+
+    public void setTrack(TrackDTO track) {
+        tracks.add(track);
     }
 }

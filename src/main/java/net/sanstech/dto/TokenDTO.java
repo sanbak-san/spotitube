@@ -5,8 +5,8 @@ public class TokenDTO {
     private String user;
 
     public TokenDTO() {
-        this.token = "123-456-789";
-        this.user = "harry";
+//        this.token = "123-456-789";
+//        this.user = "harry";
     }
 
     public TokenDTO(String token, String user) {

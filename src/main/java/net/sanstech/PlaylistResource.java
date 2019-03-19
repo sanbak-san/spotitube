@@ -12,6 +12,7 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAllPlaylists() {
+
         return Response.ok().entity(new PlaylistsDTO()).build();
     }
 
