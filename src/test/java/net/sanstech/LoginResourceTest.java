@@ -3,9 +3,9 @@ package net.sanstech;
 
 import net.sanstech.dto.TokenDTO;
 import net.sanstech.dto.UserDTO;
+import net.sanstech.resources.LoginResource;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;

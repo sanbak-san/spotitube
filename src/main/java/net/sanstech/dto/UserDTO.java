@@ -3,6 +3,7 @@ package net.sanstech.dto;
 public class UserDTO {
     private String user;
     private String password;
+    private String name;
 
     public void setUser(String user) {
         this.user = user;
@@ -26,5 +27,13 @@ public class UserDTO {
 
     public String getUser() {
         return user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

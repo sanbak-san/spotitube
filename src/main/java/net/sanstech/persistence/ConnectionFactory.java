@@ -3,6 +3,7 @@ package net.sanstech.persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 public class ConnectionFactory {
 
     static {
@@ -24,7 +25,7 @@ public class ConnectionFactory {
                     "jdbc:mysql://localhost:3306/spotitube", "root", "");
             return connection;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SpotitubePersistenceException(e);
         }
 
     }
