@@ -9,10 +9,16 @@ public class PlaylistService {
     private PlaylistDAO playlistDAO = new PlaylistDAO();
 
     public ArrayList<PlaylistDTO> getAllPlaylists() {
-        ArrayList<PlaylistDTO> playlists = new ArrayList<>();
-        playlists.add(playlistDAO.getPlaylist(1));
-        playlists.add(new PlaylistDTO(2, "Pop", false));
+        return playlistDAO.getAllPlaylists();
+    }
 
-        return playlists;
+    public ArrayList<PlaylistDTO> deletePlaylist(int id) {
+        playlistDAO.deletePlaylist(id);
+        return getAllPlaylists();
+    }
+
+    public ArrayList<PlaylistDTO> addPlaylist(PlaylistDTO playlistDTO) {
+        playlistDAO.addPlaylist(playlistDTO);
+        return getAllPlaylists();
     }
 }

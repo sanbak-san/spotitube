@@ -30,4 +30,23 @@ public class TokenDAO {
         }
         return foundToken;
     }
+
+    public TokenDTO insertToken(String token, String username) {
+        TokenDTO tokenDTO = null;
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tokens (token, user) VALUES (?,?)");
+        ) {
+            preparedStatement.setString(1, token);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
+
+            tokenDTO.setToken(token);
+            tokenDTO.setUser(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tokenDTO;
+    }
 }

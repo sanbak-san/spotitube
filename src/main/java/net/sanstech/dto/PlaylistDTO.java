@@ -7,15 +7,13 @@ import java.util.ArrayList;
 public class PlaylistDTO {
     private int id;
     private String name;
+
     private boolean owner;
     private ArrayList<TrackDTO> tracks = new ArrayList<>();
 
     private TrackDAO trackDAO = new TrackDAO();
 
     public PlaylistDTO() {
-        this.id = 2;
-        this.name = "dummy";
-        this.owner = true;
     }
 
     public PlaylistDTO(int id, String name, boolean owner) {
@@ -61,4 +59,9 @@ public class PlaylistDTO {
     public void setTrack(TrackDTO track) {
         tracks.add(track);
     }
+
+    public boolean getOwner() {
+        return owner;
+    }
+
 }
