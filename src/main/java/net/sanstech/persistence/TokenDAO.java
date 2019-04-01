@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class TokenDAO {
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -36,10 +37,11 @@ public class TokenDAO {
 
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tokens (token, user) VALUES (?,?)");
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tokens (token, user, expiry) VALUES (?,?,?)");
         ) {
             preparedStatement.setString(1, token);
             preparedStatement.setString(2, username);
+            preparedStatement.setString(3, String.valueOf(LocalDateTime.now().plusDays(2)));
             preparedStatement.execute();
 
             tokenDTO.setToken(token);

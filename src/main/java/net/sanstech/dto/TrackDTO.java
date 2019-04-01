@@ -88,4 +88,19 @@ public class TrackDTO {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "TrackDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", performer='" + performer + '\'' +
+                ", album='" + album + '\'' +
+                ", playcount=" + playcount +
+                ", publicationDate='" + publicationDate + '\'' +
+                ", description='" + description + '\'' +
+                ", offlineAvailable=" + offlineAvailable +
+                ", duration=" + duration +
+                '}';
+    }
 }

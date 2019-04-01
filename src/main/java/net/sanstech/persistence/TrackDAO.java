@@ -1,6 +1,7 @@
 package net.sanstech.persistence;
 
 import net.sanstech.dto.TrackDTO;
+import net.sanstech.dto.TracksDTO;
 import net.sanstech.dto.UserDTO;
 
 import java.sql.Connection;
@@ -40,15 +41,15 @@ public class TrackDAO {
         return foundTrack;
     }
 
-    public ArrayList<TrackDTO> getTracksByPlaylist(int playlist_id) {
-        ArrayList<TrackDTO> tracks = new ArrayList<>();
+    public TracksDTO getTracksByPlaylist(int playlist_id) {
+        TracksDTO tracks = new TracksDTO();
         TrackDTO foundTrack = null;
 
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT track_id FROM track_in_playlist WHERE playlist_id =?)");
         ) {
-            preparedStatement.setString(1, String.valueOf(playlist_id));
+            preparedStatement.setInt(1, playlist_id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -61,12 +62,27 @@ public class TrackDAO {
                 foundTrack.setPublicationDate(resultSet.getString("publicationDate"));
                 foundTrack.setOfflineAvailable(resultSet.getBoolean("offlineAvailable"));
                 foundTrack.setDuration(resultSet.getInt("duration"));
-                tracks.add(foundTrack);
+                System.out.println(foundTrack.toString());
+                tracks.addTrack(foundTrack);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        System.out.println(tracks.toString());
         return tracks;
+    }
+
+    public void deleteTrackFromPlaylist(int playlist_id, int track_id) {
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM track_in_playlist WHERE playlist_id = ? AND track_id = ?");
+        ) {
+            preparedStatement.setInt(1, playlist_id);
+            preparedStatement.setInt(2, track_id);
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,7 +1,9 @@
 package net.sanstech.persistence;
 
 import net.sanstech.dto.PlaylistDTO;
+import net.sanstech.dto.TrackDTO;
 
+import javax.ws.rs.QueryParam;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,4 +83,32 @@ public class PlaylistDAO {
         }
     }
 
+    public void renamePlaylist(PlaylistDTO playlistDTO) {
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE playlists SET name = ? WHERE id = ?");
+        ) {
+            preparedStatement.setString(1, playlistDTO.getName());
+            preparedStatement.setInt(2, playlistDTO.getId());
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void addTrackToPlaylist(int playlist_id, TrackDTO trackDTO) {
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO track_in_playlist (playlist_id, track_id, offlineAvailable) VALUES (?,?,?)");
+        ) {
+            preparedStatement.setInt(1, playlist_id);
+            preparedStatement.setInt(2, trackDTO.getId());
+            preparedStatement.setBoolean(3, trackDTO.isOfflineAvailable());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

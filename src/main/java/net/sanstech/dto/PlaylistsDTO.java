@@ -1,14 +1,12 @@
 package net.sanstech.dto;
 
-import net.sanstech.PlaylistService;
-import net.sanstech.persistence.PlaylistDAO;
+import net.sanstech.resources.PlaylistService;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 public class PlaylistsDTO {
-    private ArrayList<PlaylistDTO> playlists;
     private PlaylistService playlistService = new PlaylistService();
+    private ArrayList<PlaylistDTO> playlists;
     private float length;
 
     public PlaylistsDTO() {
@@ -32,12 +30,9 @@ public class PlaylistsDTO {
         this.length = length;
     }
 
-    public void removePlaylist(int id) {
-        //playlistService.deletePlaylist(id);
-        this.playlists = playlistService.deletePlaylist(id);
-    }
-
-    public void addPlaylist(PlaylistDTO playlistDTO) {
-        this.playlists = playlistService.addPlaylist(playlistDTO);
+    public PlaylistsDTO refreshPlaylists() {
+        playlists.clear();
+        playlists = playlistService.getAllPlaylists();
+        return this;
     }
 }

@@ -1,4 +1,4 @@
-package net.sanstech;
+package net.sanstech.resources;
 
 import net.sanstech.persistence.TrackDAO;
 
