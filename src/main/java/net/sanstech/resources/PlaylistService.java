@@ -19,17 +19,17 @@ public class PlaylistService {
     }
 
     public PlaylistsDTO deletePlaylist(int id) {
-        playlistDAO.deletePlaylist(id);
+//        playlistDAO.deletePlaylist(id);
         return new PlaylistsDTO();
     }
 
     public PlaylistsDTO addPlaylist(PlaylistDTO playlistDTO) {
-        playlistDAO.addPlaylist(playlistDTO);
+//        playlistDAO.addPlaylist(playlistDTO);
         return new PlaylistsDTO();
     }
 
     public PlaylistsDTO renamePlaylist(PlaylistDTO playlistDTO) {
-        playlistDAO.renamePlaylist(playlistDTO);
+//        playlistDAO.renamePlaylist(playlistDTO);
         return new PlaylistsDTO();
     }
 
@@ -37,18 +37,18 @@ public class PlaylistService {
         return new PlaylistsDTO();
     }
 
-    public TracksDTO getTracksByPlaylistId(int playlist_id) {
-        return trackDAO.getTracksByPlaylist(playlist_id);
-    }
-
-    public TracksDTO deleteTrackFromPlaylist(int playlist_id, int track_id) {
-        trackDAO.deleteTrackFromPlaylist(playlist_id, track_id);
-        return trackDAO.getTracksByPlaylist(playlist_id);
-    }
-
-
-    public TracksDTO addTrackToPlaylist(int playlist_id, TrackDTO trackDTO) {
-        playlistDAO.addTrackToPlaylist(playlist_id, trackDTO);
-        return trackDAO.getTracksByPlaylist(playlist_id);
-    }
+//    public TracksDTO getTracksByPlaylistId(int playlist_id) {
+//        return trackDAO.getTracksByPlaylist(playlist_id);
+//    }
+//
+//    public TracksDTO deleteTrackFromPlaylist(int playlist_id, int track_id) {
+//        trackDAO.deleteTrackFromPlaylist(playlist_id, track_id);
+//        return trackDAO.getTracksByPlaylist(playlist_id);
+//    }
+//
+//
+//    public TracksDTO addTrackToPlaylist(int playlist_id, TrackDTO trackDTO) {
+//        playlistDAO.addTrackToPlaylist(playlist_id, trackDTO);
+//        return trackDAO.getTracksByPlaylist(playlist_id);
+//    }
 }

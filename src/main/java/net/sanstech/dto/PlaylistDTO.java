@@ -5,7 +5,7 @@ import net.sanstech.persistence.TrackDAO;
 import java.util.ArrayList;
 
 public class PlaylistDTO {
-    private int id;
+    private String id;
     private String name;
 
     private boolean owner;
@@ -16,7 +16,7 @@ public class PlaylistDTO {
     public PlaylistDTO() {
     }
 
-    public PlaylistDTO(int id, String name, boolean owner) {
+    public PlaylistDTO(String id, String name, boolean owner) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -24,11 +24,11 @@ public class PlaylistDTO {
         //tracks.add(trackDAO.getTrack(1));
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

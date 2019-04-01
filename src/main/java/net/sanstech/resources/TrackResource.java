@@ -1,5 +1,6 @@
 package net.sanstech.resources;
 
+import net.sanstech.dto.TrackDTO;
 import net.sanstech.persistence.TrackDAO;
 
 import javax.ws.rs.GET;
@@ -19,10 +20,10 @@ public class TrackResource {
 //
 //        return Response.ok().entity(trackDAO.getTrack(1)).build();
 //    }
-
+/*trackDAO.getTracksByPlaylist(playlist_id)*/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksByPlaylist(@QueryParam("forPlaylist") int playlist_id) {
-        return Response.ok().entity(trackDAO.getTracksByPlaylist(playlist_id)).build();
+        return Response.ok().entity(new TrackDTO()).build();
     }
 }

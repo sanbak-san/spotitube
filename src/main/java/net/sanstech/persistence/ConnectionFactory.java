@@ -8,6 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
+
 public class ConnectionFactory {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/spotitube";
     private static final String DB_USER = "root";
@@ -36,14 +40,16 @@ public class ConnectionFactory {
         return properties;
     }
 
-    public Connection getConnection() {
-        loadDriver();
-        try {
-            return DriverManager.getConnection(properties.getProperty("db.url"), properties.getProperty("db.user"), properties.getProperty("db.pass"));
-        } catch (SQLException e) {
-            throw new SpotitubePersistenceException(e);
-        }
+    public MongoDatabase getConnection() {
+        //loadDriver();
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb://spotitube:ILLFRYURBRAINBITCH!!!111<<<@spotitube-shard-00-00-a2thx.azure.mongodb.net:27017,spotitube-shard-00-01-a2thx.azure.mongodb.net:27017,spotitube-shard-00-02-a2thx.azure.mongodb.net:27017/test?ssl=true&replicaSet=Spotitube-shard-0&authSource=admin&retryWrites=true");
 
+        MongoClient mongoClient = new MongoClient(uri);
+        MongoDatabase database = mongoClient.getDatabase("spotitube");
+
+
+        return mongoClient.getDatabase("spotitube");
     }
 
     private void loadDriver() {

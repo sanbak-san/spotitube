@@ -43,7 +43,7 @@ public class PlaylistResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksByPlaylist(@PathParam("id") int playlist_id, @QueryParam("token") String token) {
 
-        TracksDTO tracksByPlaylistId = playlistService.getTracksByPlaylistId(playlist_id);
+        TracksDTO tracksByPlaylistId = new TracksDTO();//playlistService.getTracksByPlaylistId(playlist_id);
         System.out.println(tracksByPlaylistId);
         return Response.ok().entity(tracksByPlaylistId).build();
     }
@@ -61,7 +61,8 @@ public class PlaylistResource {
     @Path("/{playlist_id}/tracks/{track_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTrackFromPlaylist(@PathParam("playlist_id") int playlist_id, @PathParam("track_id") int track_id) {
-        return Response.ok().entity(playlistService.deleteTrackFromPlaylist(playlist_id, track_id)).build();
+//        return Response.ok().entity(playlistService.deleteTrackFromPlaylist(playlist_id, track_id)).build();
+        return Response.ok().entity(new PlaylistsDTO()).build();
     }
 
     @POST
@@ -69,6 +70,7 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(@PathParam("id") int playlist_id, TrackDTO trackDTO) {
-        return Response.ok().entity(playlistService.addTrackToPlaylist(playlist_id, trackDTO)).build();
+//        return Response.ok().entity(playlistService.addTrackToPlaylist(playlist_id, trackDTO)).build();
+        return Response.ok().entity(new PlaylistsDTO()).build();
     }
 }
