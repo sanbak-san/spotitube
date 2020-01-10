@@ -1,6 +1,6 @@
 package net.sanstech.dto;
 
-import net.sanstech.persistence.TrackDAO;
+import net.sanstech.persistence.impl.TrackDAOImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class PlaylistDTO {
     private boolean owner;
     private List<TrackDTO> tracks = new ArrayList<>();
 
-    private TrackDAO trackDAO = new TrackDAO();
+    private TrackDAOImpl trackDAOImpl = new TrackDAOImpl();
 
     public PlaylistDTO() {
     }

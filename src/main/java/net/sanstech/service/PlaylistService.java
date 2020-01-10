@@ -9,4 +9,6 @@ public interface PlaylistService {
     PlaylistSummaryDTO deletePlaylist(String token, int id);
 
     PlaylistSummaryDTO addPlaylist(String token, PlaylistDTO playlistDTO);
+
+    PlaylistSummaryDTO editPlaylist(String token, PlaylistDTO playlistDTO);
 }

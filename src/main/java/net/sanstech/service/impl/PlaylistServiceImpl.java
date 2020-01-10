@@ -34,7 +34,16 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public PlaylistSummaryDTO addPlaylist(final String token, final PlaylistDTO playlistDTO) {
-        playlistDAO.addPlaylist(playlistDTO);
+        final TokenDTO tokenDTO = tokenDAO.getToken(token);
+
+        playlistDAO.addPlaylist(tokenDTO, playlistDTO);
+        return getAllPlaylists(token);
+    }
+
+    @Override
+    public PlaylistSummaryDTO editPlaylist(final String token, final PlaylistDTO playlistDTO) {
+        playlistDAO.editPlaylist(playlistDTO);
+
         return getAllPlaylists(token);
     }
 }

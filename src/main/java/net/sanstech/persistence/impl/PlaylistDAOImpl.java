@@ -6,7 +6,6 @@ import net.sanstech.dto.TokenDTO;
 import net.sanstech.exception.SpotitubePersistenceException;
 import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.PlaylistDAO;
-import net.sanstech.persistence.TrackDAO;
 
 import javax.enterprise.inject.Default;
 import java.sql.Connection;
@@ -17,14 +16,18 @@ import java.util.ArrayList;
 
 @Default
 public class PlaylistDAOImpl implements PlaylistDAO {
+    private static final String DELETE_FROM_PLAYLISTS_WHERE_ID = "DELETE FROM playlists WHERE id=?";
+    private static final String SELECT_FROM_PLAYLISTS_WHERE_ID = "SELECT * FROM playlists WHERE id=?";
+    private static final String INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES = "INSERT INTO playlists (name, owner) VALUES (?,?)";
+
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
-    private final TrackDAO trackDAO = new TrackDAO();
+    private final TrackDAOImpl trackDAOImpl = new TrackDAOImpl();
 
     @Override
     public PlaylistDTO getPlaylist(final int id) {
         try (
                 final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlists WHERE id=?")
+                final PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_PLAYLISTS_WHERE_ID)
         ) {
             preparedStatement.setString(1, String.valueOf(id));
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -33,7 +36,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                     foundPlaylist.setId(id);
                     foundPlaylist.setName(resultSet.getString("name"));
                     foundPlaylist.setOwner(true);
-                    foundPlaylist.setTrack(trackDAO.getTrack(1));
+                    foundPlaylist.setTrack(trackDAOImpl.getTrack(1));
                     return foundPlaylist;
                 } else {
                     return null;
@@ -71,28 +74,41 @@ public class PlaylistDAOImpl implements PlaylistDAO {
     @Override
     public void deletePlaylist(final int id) {
         try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM playlists WHERE id=?");
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FROM_PLAYLISTS_WHERE_ID)
         ) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SpotitubePersistenceException(e);
         }
     }
 
     @Override
-    public void addPlaylist(final PlaylistDTO playlistDTO) {
+    public void addPlaylist(final TokenDTO tokenDTO, final PlaylistDTO playlistDTO) {
         try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO playlists (name, owner) VALUES (?,?)");
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES)
         ) {
             preparedStatement.setString(1, playlistDTO.getName());
-            preparedStatement.setString(2, String.valueOf(playlistDTO.getOwner()));
+            preparedStatement.setString(2, tokenDTO.getUser());
             preparedStatement.execute();
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SpotitubePersistenceException(e);
+        }
+    }
+
+    @Override
+    public void editPlaylist(final PlaylistDTO playlistDTO) {
+        try (
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE playlists SET name =? WHERE id =?")
+        ) {
+            preparedStatement.setString(1, playlistDTO.getName());
+            preparedStatement.setString(2, String.valueOf(playlistDTO.getId()));
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new SpotitubePersistenceException(e);
         }
     }
 

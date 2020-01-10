@@ -12,5 +12,7 @@ public interface PlaylistDAO {
 
     void deletePlaylist(int id);
 
-    void addPlaylist(PlaylistDTO playlistDTO);
+    void addPlaylist(TokenDTO tokenDTO, PlaylistDTO playlistDTO);
+
+    void editPlaylist(PlaylistDTO playlistDTO);
 }

@@ -2,7 +2,6 @@ package net.sanstech.resources;
 
 import com.mysql.cj.util.StringUtils;
 import net.sanstech.dto.PlaylistDTO;
-import net.sanstech.dto.PlaylistSummaryDTO;
 import net.sanstech.service.PlaylistService;
 
 import javax.inject.Inject;
@@ -42,17 +41,22 @@ public class PlaylistResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addPlaylist(final @QueryParam("token") String token, final PlaylistDTO playlistDTO) {
-        PlaylistSummaryDTO playlistSummaryDTO = new PlaylistSummaryDTO();
-//        playlistSummaryDTO.addPlaylist(playlistDTO);
+        if (StringUtils.isNullOrEmpty(token)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
-        return Response.ok().entity(playlistSummaryDTO).build();
+        return Response.ok().entity(playlistService.addPlaylist(token, playlistDTO)).build();
     }
 
-//    @PUT
-//    @Path("/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response updatePlaylistName(PathParam("id") int id, PlaylistDTO playlistDTO){
-//
-//    }
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updatePlaylistName(final @QueryParam("token") String token, final PlaylistDTO playlistDTO) {
+        if (StringUtils.isNullOrEmpty(token)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().entity(playlistService.editPlaylist(token, playlistDTO)).build();
+    }
 }
