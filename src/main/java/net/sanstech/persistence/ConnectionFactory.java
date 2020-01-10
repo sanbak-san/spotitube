@@ -10,8 +10,8 @@ import java.util.Properties;
 
 public class ConnectionFactory {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/spotitube";
-    private static final String DB_USER = "root";
-    private static final String DB_PASS = "";
+    private static final String DB_USER = "san";
+    private static final String DB_PASS = "pass";
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private Properties properties;
 
@@ -49,11 +49,7 @@ public class ConnectionFactory {
     private void loadDriver() {
         try {
             Class.forName(properties.getProperty("db.driver")).newInstance();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

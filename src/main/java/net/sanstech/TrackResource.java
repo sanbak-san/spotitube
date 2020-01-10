@@ -1,6 +1,5 @@
 package net.sanstech;
 
-import net.sanstech.dto.TrackDTO;
 import net.sanstech.persistence.TrackDAO;
 
 import javax.ws.rs.GET;

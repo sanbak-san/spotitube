@@ -1,0 +1,58 @@
+package net.sanstech.persistence.impl;
+
+import net.sanstech.dto.TokenDTO;
+import net.sanstech.dto.UserDTO;
+import net.sanstech.persistence.ConnectionFactory;
+import net.sanstech.persistence.SpotitubePersistenceException;
+import net.sanstech.persistence.TokenDAO;
+
+import javax.persistence.PersistenceException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class TokenDAOImpl implements TokenDAO {
+    private static final String INSERT_INTO_TOKENS_TOKEN_USER_VALUES = "INSERT INTO tokens (token, user) VALUES (?,?)";
+    private static final String SELECT_FROM_TOKENS_WHERE_USER = "SELECT * FROM tokens WHERE user=?";
+
+    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+
+    @Override
+    public TokenDTO getToken(final UserDTO user) {
+        try (
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_TOKENS_WHERE_USER)
+        ) {
+            preparedStatement.setString(1, user.getUser());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            final TokenDTO foundToken = new TokenDTO();
+
+            if (resultSet.next()) {
+                foundToken.setUser(user.getName());
+                foundToken.setToken(resultSet.getString("token"));
+            }
+
+            resultSet.close();
+            return foundToken;
+        } catch (SQLException e) {
+            throw new SpotitubePersistenceException(e);
+        }
+    }
+
+    @Override
+    public TokenDTO insertToken(final String token, final UserDTO user) {
+        try (
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_TOKENS_TOKEN_USER_VALUES);
+        ) {
+            preparedStatement.setString(1, token);
+            preparedStatement.setString(2, user.getUser());
+            preparedStatement.execute();
+
+            return new TokenDTO(token, user.getName());
+        } catch (SQLException e) {
+            throw new SpotitubePersistenceException(e);
+        }
+    }
+}

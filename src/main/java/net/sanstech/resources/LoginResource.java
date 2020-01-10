@@ -1,8 +1,9 @@
 package net.sanstech.resources;
 
-import net.sanstech.dto.TokenDTO;
 import net.sanstech.dto.UserDTO;
+import net.sanstech.exceptionmapper.LoginExceptionMapper;
 import net.sanstech.service.AuthenticationService;
+import net.sanstech.service.SpotitubeLoginException;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -17,26 +18,24 @@ public class LoginResource {
 
     private AuthenticationService authenticationService;
 
+    private final LoginExceptionMapper loginExceptionMapper = new LoginExceptionMapper();
+
     public LoginResource() {
     }
 
     @Inject
-    public LoginResource(AuthenticationService authenticationService) {
+    public LoginResource(final AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response loginUser(UserDTO user) {
-        TokenDTO token = authenticationService.login(user.getUser(), user.getPassword());
-        return Response.ok(token).build();
-//        UserDTO authenticatedUser = userDAO.getUser(user.getUser(), user.getPassword());
-//
-//        if (authenticatedUser != null) {
-//            return Response.ok().entity(tokenDAO.getToken(user.getUser())).build();
-//        } else {
-//            return Response.ok().entity(new ErrorDTO("Login failed for user.")).build();
-//        }
+    public Response loginUser(final UserDTO user) {
+        try {
+            return Response.ok().entity(authenticationService.login(user.getUser(), user.getPassword())).build();
+        } catch (SpotitubeLoginException e) {
+            return loginExceptionMapper.toResponse(e);
+        }
     }
 }

@@ -7,12 +7,16 @@ import net.sanstech.persistence.UserDAO;
 import net.sanstech.util.TokenGenerator;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 
 @Default
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    @Inject
     private UserDAO userDAO;
-    private TokenDAO tokenDAO = new TokenDAO();
+
+    @Inject
+    private TokenDAO tokenDAO;
 
     private TokenGenerator tokenGenerator = new TokenGenerator();
 
@@ -25,17 +29,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public TokenDTO login(String username, String password) {
-        UserDTO user = userDAO.getUser(username, password);
+        final UserDTO user = userDAO.getUser(username, password);
         if (user != null) {
-            TokenDTO token = tokenDAO.getToken(username);
-            if (token != null) {
+            final TokenDTO token = tokenDAO.getToken(user);
+            if (token.getToken() != null && token.getUser() != null) {
                 return token;
             } else {
-                return tokenDAO.insertToken(tokenGenerator.generateToken(), username);
+                return tokenDAO.insertToken(tokenGenerator.generateToken(), user);
             }
         } else {
             throw new SpotitubeLoginException("Login failed for user " + username);
         }
     }
-
 }

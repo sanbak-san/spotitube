@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class PlaylistDAO {
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
-    private TrackDAO trackDAO = new TrackDAO();
+    private final TrackDAO trackDAO = new TrackDAO();
 
     public PlaylistDTO getPlaylist(int id) {
         PlaylistDTO foundPlaylist = null;
@@ -20,7 +20,7 @@ public class PlaylistDAO {
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlists WHERE id=?");
         ) {
             preparedStatement.setString(1, String.valueOf(id));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            final ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 foundPlaylist = new PlaylistDTO();
@@ -29,6 +29,7 @@ public class PlaylistDAO {
                 foundPlaylist.setOwner(true);
                 foundPlaylist.setTrack(trackDAO.getTrack(1));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

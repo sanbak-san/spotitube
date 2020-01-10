@@ -6,7 +6,7 @@
                       http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
         bean-discovery-mode="all">
 
-    <alternatives>
-        <class>net.sanstech.service.LocalAuthenticationService</class>
-    </alternatives>
+<!--    <alternatives>-->
+<!--        <class>net.sanstech.service.LocalAuthenticationService</class>-->
+<!--    </alternatives>-->
 </beans>
