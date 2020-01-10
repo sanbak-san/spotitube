@@ -1,8 +1,8 @@
 package net.sanstech.persistence.impl;
 
 import net.sanstech.dto.UserDTO;
+import net.sanstech.exception.SpotitubePersistenceException;
 import net.sanstech.persistence.ConnectionFactory;
-import net.sanstech.persistence.SpotitubePersistenceException;
 import net.sanstech.persistence.UserDAO;
 
 import javax.enterprise.inject.Default;

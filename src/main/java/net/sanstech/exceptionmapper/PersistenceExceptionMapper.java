@@ -1,7 +1,7 @@
 package net.sanstech.exceptionmapper;
 
 import net.sanstech.dto.ErrorDTO;
-import net.sanstech.persistence.SpotitubePersistenceException;
+import net.sanstech.exception.SpotitubePersistenceException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

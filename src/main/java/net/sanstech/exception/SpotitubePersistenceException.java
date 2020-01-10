@@ -1,4 +1,4 @@
-package net.sanstech.persistence;
+package net.sanstech.exception;
 
 public class SpotitubePersistenceException extends RuntimeException {
     public SpotitubePersistenceException(Throwable e) {

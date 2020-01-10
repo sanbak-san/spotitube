@@ -1,9 +1,9 @@
 package net.sanstech.resources;
 
 import net.sanstech.dto.UserDTO;
+import net.sanstech.exception.SpotitubeLoginException;
 import net.sanstech.exceptionmapper.LoginExceptionMapper;
 import net.sanstech.service.AuthenticationService;
-import net.sanstech.service.SpotitubeLoginException;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
