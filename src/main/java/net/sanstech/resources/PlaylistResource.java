@@ -2,6 +2,8 @@ package net.sanstech.resources;
 
 import com.mysql.cj.util.StringUtils;
 import net.sanstech.dto.PlaylistDTO;
+import net.sanstech.persistence.TrackDAO;
+import net.sanstech.persistence.impl.TrackDAOImpl;
 import net.sanstech.service.PlaylistService;
 
 import javax.inject.Inject;
@@ -59,4 +61,14 @@ public class PlaylistResource {
 
         return Response.ok().entity(playlistService.editPlaylist(token, playlistDTO)).build();
     }
-}
+
+    @GET
+    @Path("/{id}/tracks")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getAllTracksForPlaylist(final @QueryParam("token") String token, final @QueryParam("forPlaylist") int forPlaylist) {
+        if (StringUtils.isNullOrEmpty(token)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().entity(playlistService.getAllTracks(forPlaylist)).build();
+    }}

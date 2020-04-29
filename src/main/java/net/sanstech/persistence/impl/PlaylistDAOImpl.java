@@ -42,14 +42,13 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                     return null;
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
 
     @Override
     public PlaylistSummaryDTO getAllPlaylists(final TokenDTO tokenDTO) {
-
         try (
                 final Connection connection = connectionFactory.getConnection();
                 final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlists")
@@ -65,10 +64,9 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                 }
                 return playlists;
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
-
     }
 
     @Override
@@ -79,7 +77,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
         ) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
@@ -93,7 +91,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
             preparedStatement.setString(1, playlistDTO.getName());
             preparedStatement.setString(2, tokenDTO.getUser());
             preparedStatement.execute();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
@@ -107,9 +105,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
             preparedStatement.setString(1, playlistDTO.getName());
             preparedStatement.setString(2, String.valueOf(playlistDTO.getId()));
             preparedStatement.execute();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
-
 }

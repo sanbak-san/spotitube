@@ -1,6 +1,7 @@
 package net.sanstech.dto;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TrackSummaryDTO {
@@ -11,12 +12,11 @@ public class TrackSummaryDTO {
         tracks = new ArrayList<>();
     }
 
-    public List<TrackDTO> getPlaylists() {
+    public List<TrackDTO> getTracks() {
         return tracks;
     }
 
     public void setPlaylists(List<TrackDTO> tracks) {
         this.tracks = tracks;
     }
-
 }

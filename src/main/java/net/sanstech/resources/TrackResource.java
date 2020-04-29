@@ -24,6 +24,7 @@ public class TrackResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Response.ok().entity(trackDAOImpl.getTrack(1)).build();
+        return Response.ok().entity(trackDAOImpl.getAllTracksForPlaylist(forPlaylist)).build();
     }
+
 }

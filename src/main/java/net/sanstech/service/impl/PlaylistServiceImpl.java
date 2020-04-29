@@ -3,8 +3,10 @@ package net.sanstech.service.impl;
 import net.sanstech.dto.PlaylistDTO;
 import net.sanstech.dto.PlaylistSummaryDTO;
 import net.sanstech.dto.TokenDTO;
+import net.sanstech.dto.TrackSummaryDTO;
 import net.sanstech.persistence.PlaylistDAO;
 import net.sanstech.persistence.TokenDAO;
+import net.sanstech.persistence.TrackDAO;
 import net.sanstech.service.PlaylistService;
 
 import javax.enterprise.inject.Default;
@@ -18,6 +20,9 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Inject
     private TokenDAO tokenDAO;
+
+    @Inject
+    private TrackDAO trackDAO;
 
     @Override
     public PlaylistSummaryDTO getAllPlaylists(final String token) {
@@ -45,5 +50,10 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlistDAO.editPlaylist(playlistDTO);
 
         return getAllPlaylists(token);
+    }
+
+    @Override
+    public TrackSummaryDTO getAllTracks(int forPlaylist) {
+        return trackDAO.getAllTracksForPlaylist(forPlaylist);
     }
 }

@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class TrackDAOImpl implements TrackDAO {
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-    public TrackDTO getTrack(int id) {
+    public TrackDTO getTrack(final int id) {
         TrackDTO foundTrack = null;
 
         try (
@@ -21,7 +21,7 @@ public class TrackDAOImpl implements TrackDAO {
                 final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id=?");
         ) {
             preparedStatement.setString(1, String.valueOf(id));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            final ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 foundTrack = new TrackDTO();
@@ -34,7 +34,7 @@ public class TrackDAOImpl implements TrackDAO {
                 foundTrack.setOfflineAvailable(resultSet.getBoolean("offlineAvailable"));
                 foundTrack.setDuration(resultSet.getInt("duration"));
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             e.printStackTrace();
         }
 
@@ -42,22 +42,31 @@ public class TrackDAOImpl implements TrackDAO {
     }
 
     @Override
-    public TrackSummaryDTO getAllTracksForPlaylist(int id) {
+    public TrackSummaryDTO getAllTracksForPlaylist(final int id) {
+        final TrackSummaryDTO trackSummaryDTO = new TrackSummaryDTO();
         try (
                 final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id NOT IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
+                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
         ) {
             preparedStatement.setString(1, String.valueOf(id));
-            ResultSet resultSet = preparedStatement.executeQuery();
+            final ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return null;
+            while (resultSet.next()) {
+                final TrackDTO foundTrack = new TrackDTO();
+                foundTrack.setId(id);
+                foundTrack.setAlbum(resultSet.getString("album"));
+                foundTrack.setDescription(resultSet.getString("description"));
+                foundTrack.setPerformer(resultSet.getString("performer"));
+                foundTrack.setTitle(resultSet.getString("title"));
+                foundTrack.setPublicationDate(resultSet.getString("publicationDate"));
+                foundTrack.setOfflineAvailable(resultSet.getBoolean("offlineAvailable"));
+                foundTrack.setDuration(resultSet.getInt("duration"));
+                trackSummaryDTO.getTracks().add(foundTrack);
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             e.printStackTrace();
         }
 
-
-        return null;
+        return trackSummaryDTO;
     }
 }

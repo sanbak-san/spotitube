@@ -17,26 +17,25 @@ public class UserDAOImpl implements UserDAO {
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
 
     @Override
-    public UserDTO getUser(String username, String password) {
-        UserDTO foundUser = null;
-
+    public UserDTO getUser(final String username, final String password) {
         try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM account WHERE user=? AND password=?");
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM account WHERE user=? AND password=?");
         ) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            final ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                foundUser = new UserDTO();
+                final UserDTO foundUser = new UserDTO();
                 foundUser.setUser(username);
                 foundUser.setPassword(password);
                 foundUser.setName(resultSet.getString("name"));
+                return foundUser;
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
-        return foundUser;
+        return null;
     }
 }

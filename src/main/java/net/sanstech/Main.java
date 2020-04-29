@@ -6,11 +6,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
