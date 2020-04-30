@@ -50,7 +50,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public TrackSummaryDTO getAllTracks(final int playlistId) {
+    public TrackSummaryDTO getTracks(final int playlistId) {
         return trackDAO.getAllTracksFromPlaylist(playlistId);
     }
 
@@ -58,13 +58,13 @@ public class PlaylistServiceImpl implements PlaylistService {
     public TrackSummaryDTO addTrackToPlaylist(final int playlistId, final TrackDTO trackDTO) {
         trackDAO.addTrackToPlaylist(playlistId, trackDTO);
 
-        return getAllTracks(playlistId);
+        return getTracks(playlistId);
     }
 
     @Override
     public TrackSummaryDTO removeTrackFromPlaylist(final int playlistId, final int trackId) {
         trackDAO.removeTrackFromPlaylist(playlistId, trackId);
 
-        return getAllTracks(playlistId);
+        return getTracks(playlistId);
     }
 }

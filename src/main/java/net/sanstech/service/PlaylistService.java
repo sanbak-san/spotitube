@@ -14,7 +14,7 @@ public interface PlaylistService {
 
     PlaylistSummaryDTO editPlaylist(String token, PlaylistDTO playlistDTO);
 
-    TrackSummaryDTO getAllTracks(int playlistId);
+    TrackSummaryDTO getTracks(int playlistId);
 
     TrackSummaryDTO addTrackToPlaylist(int playlistId, TrackDTO trackDTO);
 
