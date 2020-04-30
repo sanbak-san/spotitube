@@ -17,4 +17,6 @@ public interface PlaylistService {
     TrackSummaryDTO getAllTracks(int playlistId);
 
     TrackSummaryDTO addTrackToPlaylist(int playlistId, TrackDTO trackDTO);
+
+    TrackSummaryDTO removeTrackFromPlaylist(int playlistId, int trackId);
 }

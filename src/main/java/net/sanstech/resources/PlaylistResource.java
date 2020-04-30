@@ -2,6 +2,7 @@ package net.sanstech.resources;
 
 import com.mysql.cj.util.StringUtils;
 import net.sanstech.dto.PlaylistDTO;
+import net.sanstech.dto.TrackDTO;
 import net.sanstech.persistence.TrackDAO;
 import net.sanstech.persistence.impl.TrackDAOImpl;
 import net.sanstech.service.PlaylistService;
@@ -65,10 +66,35 @@ public class PlaylistResource {
     @GET
     @Path("/{id}/tracks")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getAllTracksForPlaylist(final @QueryParam("token") String token, final @QueryParam("forPlaylist") int forPlaylist) {
+    public Response getAllTracksForPlaylist(final @QueryParam("token") String token, final @PathParam("id") int id) {
         if (StringUtils.isNullOrEmpty(token)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Response.ok().entity(playlistService.getAllTracks(forPlaylist)).build();
-    }}
+        return Response.ok().entity(playlistService.getAllTracks(id)).build();
+    }
+
+    @POST
+    @Path("/{id}/tracks")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addTrackToPlaylist(final @QueryParam("token") String token, final @PathParam("id") int id, final TrackDTO trackDTO){
+        if (StringUtils.isNullOrEmpty(token)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().entity(playlistService.addTrackToPlaylist(id, trackDTO)).build();
+    }
+
+    @DELETE
+    @Path("/{playlist_id}/tracks/{track_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response removeTrackFromPlaylist(final @QueryParam("token") String token, final @PathParam("playlist_id") int playlistId, final @PathParam("track_id") int trackId){
+        if (StringUtils.isNullOrEmpty(token)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().entity(playlistService.removeTrackFromPlaylist(playlistId, trackId)).build();
+    }
+}

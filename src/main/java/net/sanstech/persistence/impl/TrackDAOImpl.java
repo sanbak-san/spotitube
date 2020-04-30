@@ -2,6 +2,7 @@ package net.sanstech.persistence.impl;
 
 import net.sanstech.dto.TrackDTO;
 import net.sanstech.dto.TrackSummaryDTO;
+import net.sanstech.exception.SpotitubePersistenceException;
 import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.TrackDAO;
 
@@ -14,37 +15,10 @@ public class TrackDAOImpl implements TrackDAO {
 
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-    public TrackDTO getTrack(final int id) {
-        TrackDTO foundTrack = null;
-
-        try (
-                final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id=?");
-        ) {
-            preparedStatement.setString(1, String.valueOf(id));
-            final ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                foundTrack = new TrackDTO();
-                foundTrack.setId(id);
-                foundTrack.setAlbum(resultSet.getString("album"));
-                foundTrack.setDescription(resultSet.getString("description"));
-                foundTrack.setPerformer(resultSet.getString("performer"));
-                foundTrack.setTitle(resultSet.getString("title"));
-                foundTrack.setPublicationDate(resultSet.getString("publicationDate"));
-                foundTrack.setOfflineAvailable(resultSet.getBoolean("offlineAvailable"));
-                foundTrack.setDuration(resultSet.getInt("duration"));
-            }
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-
-        return foundTrack;
-    }
-
     @Override
     public TrackSummaryDTO getAllTracksFromPlaylist(final int playlistId) {
         final TrackSummaryDTO trackSummaryDTO = new TrackSummaryDTO();
+
         try (
                 final Connection connection = connectionFactory.getConnection();
                 final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
@@ -54,7 +28,7 @@ public class TrackDAOImpl implements TrackDAO {
 
             while (resultSet.next()) {
                 final TrackDTO foundTrack = new TrackDTO();
-                foundTrack.setId(playlistId);
+                foundTrack.setId(resultSet.getInt("id"));
                 foundTrack.setAlbum(resultSet.getString("album"));
                 foundTrack.setDescription(resultSet.getString("description"));
                 foundTrack.setPerformer(resultSet.getString("performer"));
@@ -65,7 +39,7 @@ public class TrackDAOImpl implements TrackDAO {
                 trackSummaryDTO.getTracks().add(foundTrack);
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            throw new SpotitubePersistenceException(e);
         }
 
         return trackSummaryDTO;
@@ -74,6 +48,7 @@ public class TrackDAOImpl implements TrackDAO {
     @Override
     public TrackSummaryDTO getAllTracksForPlaylist(final int playlistId) {
         final TrackSummaryDTO trackSummaryDTO = new TrackSummaryDTO();
+
         try (
                 final Connection connection = connectionFactory.getConnection();
                 final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tracks WHERE id NOT IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
@@ -83,7 +58,7 @@ public class TrackDAOImpl implements TrackDAO {
 
             while (resultSet.next()) {
                 final TrackDTO foundTrack = new TrackDTO();
-                foundTrack.setId(playlistId);
+                foundTrack.setId(resultSet.getInt("id"));
                 foundTrack.setAlbum(resultSet.getString("album"));
                 foundTrack.setDescription(resultSet.getString("description"));
                 foundTrack.setPerformer(resultSet.getString("performer"));
@@ -94,9 +69,38 @@ public class TrackDAOImpl implements TrackDAO {
                 trackSummaryDTO.getTracks().add(foundTrack);
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            throw new SpotitubePersistenceException(e);
         }
 
         return trackSummaryDTO;
+    }
+
+    @Override
+    public void addTrackToPlaylist(final int playlistId, final TrackDTO trackDTO) {
+        try (
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tracks_in_playlists (track_id, playlist_id, offline_available) VALUES (?,?,?)")
+        ) {
+            preparedStatement.setInt(1, trackDTO.getId());
+            preparedStatement.setInt(2, playlistId);
+            preparedStatement.setBoolean(3, trackDTO.isOfflineAvailable());
+            preparedStatement.execute();
+        } catch (final SQLException e) {
+            throw new SpotitubePersistenceException(e);
+        }
+    }
+
+    @Override
+    public void removeTrackFromPlaylist(final int playlistId, final int trackId) {
+        try (
+                final Connection connection = connectionFactory.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM tracks_in_playlists WHERE track_id=? AND playlist_id=?")
+        ) {
+            preparedStatement.setInt(1, trackId);
+            preparedStatement.setInt(2, playlistId);
+            preparedStatement.execute();
+        } catch (final SQLException e) {
+            throw new SpotitubePersistenceException(e);
+        }
     }
 }

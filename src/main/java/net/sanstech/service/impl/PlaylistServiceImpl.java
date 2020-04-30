@@ -50,13 +50,21 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public TrackSummaryDTO getAllTracks(int playlistId) {
+    public TrackSummaryDTO getAllTracks(final int playlistId) {
         return trackDAO.getAllTracksFromPlaylist(playlistId);
     }
 
     @Override
-    public TrackSummaryDTO addTrackToPlaylist(int playlistId, TrackDTO trackDTO) {
-//        return trackDAO.addTrackToPlaylist;
-        return null;
+    public TrackSummaryDTO addTrackToPlaylist(final int playlistId, final TrackDTO trackDTO) {
+        trackDAO.addTrackToPlaylist(playlistId, trackDTO);
+
+        return getAllTracks(playlistId);
+    }
+
+    @Override
+    public TrackSummaryDTO removeTrackFromPlaylist(final int playlistId, final int trackId) {
+        trackDAO.removeTrackFromPlaylist(playlistId, trackId);
+
+        return getAllTracks(playlistId);
     }
 }
