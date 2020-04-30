@@ -24,30 +24,6 @@ public class PlaylistDAOImpl implements PlaylistDAO {
     private final TrackDAOImpl trackDAOImpl = new TrackDAOImpl();
 
     @Override
-    public PlaylistDTO getPlaylist(final int id) {
-        try (
-                final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FROM_PLAYLISTS_WHERE_ID)
-        ) {
-            preparedStatement.setString(1, String.valueOf(id));
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    final PlaylistDTO foundPlaylist = new PlaylistDTO();
-                    foundPlaylist.setId(id);
-                    foundPlaylist.setName(resultSet.getString("name"));
-                    foundPlaylist.setOwner(true);
-                    foundPlaylist.setTrack(trackDAOImpl.getTrack(1));
-                    return foundPlaylist;
-                } else {
-                    return null;
-                }
-            }
-        } catch (final SQLException e) {
-            throw new SpotitubePersistenceException(e);
-        }
-    }
-
-    @Override
     public PlaylistSummaryDTO getAllPlaylists(final TokenDTO tokenDTO) {
         try (
                 final Connection connection = connectionFactory.getConnection();
@@ -60,7 +36,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                             new PlaylistDTO(resultSet.getInt("id"),
                                     resultSet.getString("name"),
                                     tokenDTO.getUser().equals(resultSet.getString("owner")),
-                                    new ArrayList<>()));
+                                    trackDAOImpl.getAllTracksFromPlaylist(resultSet.getInt("id")).getTracks()));
                 }
                 return playlists;
             }

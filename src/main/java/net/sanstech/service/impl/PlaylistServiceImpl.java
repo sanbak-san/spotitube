@@ -1,9 +1,6 @@
 package net.sanstech.service.impl;
 
-import net.sanstech.dto.PlaylistDTO;
-import net.sanstech.dto.PlaylistSummaryDTO;
-import net.sanstech.dto.TokenDTO;
-import net.sanstech.dto.TrackSummaryDTO;
+import net.sanstech.dto.*;
 import net.sanstech.persistence.PlaylistDAO;
 import net.sanstech.persistence.TokenDAO;
 import net.sanstech.persistence.TrackDAO;
@@ -53,7 +50,13 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public TrackSummaryDTO getAllTracks(int forPlaylist) {
-        return trackDAO.getAllTracksForPlaylist(forPlaylist);
+    public TrackSummaryDTO getAllTracks(int playlistId) {
+        return trackDAO.getAllTracksFromPlaylist(playlistId);
+    }
+
+    @Override
+    public TrackSummaryDTO addTrackToPlaylist(int playlistId, TrackDTO trackDTO) {
+//        return trackDAO.addTrackToPlaylist;
+        return null;
     }
 }

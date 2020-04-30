@@ -2,6 +2,7 @@ package net.sanstech.service;
 
 import net.sanstech.dto.PlaylistDTO;
 import net.sanstech.dto.PlaylistSummaryDTO;
+import net.sanstech.dto.TrackDTO;
 import net.sanstech.dto.TrackSummaryDTO;
 
 public interface PlaylistService {
@@ -13,5 +14,7 @@ public interface PlaylistService {
 
     PlaylistSummaryDTO editPlaylist(String token, PlaylistDTO playlistDTO);
 
-    TrackSummaryDTO getAllTracks(int forPlaylist);
+    TrackSummaryDTO getAllTracks(int playlistId);
+
+    TrackSummaryDTO addTrackToPlaylist(int playlistId, TrackDTO trackDTO);
 }
