@@ -20,13 +20,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private TokenDAO tokenDAO;
 
+    @Inject
     private TokenGenerator tokenGenerator = new TokenGenerator();
 
     public AuthenticationServiceImpl() {
-    }
-
-    public AuthenticationServiceImpl(final UserDAO userDAO) {
-        this.userDAO = userDAO;
     }
 
     @Override
