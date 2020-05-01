@@ -10,7 +10,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class LoginExceptionMapper implements ExceptionMapper<SpotitubeLoginException> {
     @Override
-    public Response toResponse(SpotitubeLoginException message) {
+    public Response toResponse(final SpotitubeLoginException message) {
         return Response.status(Response.Status.UNAUTHORIZED)
                 .entity(new ErrorDTO(message.getMessage()))
                 .build();
