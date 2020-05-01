@@ -12,7 +12,7 @@ public class TrackServiceImpl implements TrackService {
     TrackDAO trackDAO;
 
     @Override
-    public TrackSummaryDTO getAllTracksForPlaylist(int playlistId) {
+    public TrackSummaryDTO getAllTracksForPlaylist(final int playlistId) {
         return trackDAO.getAllTracksForPlaylist(playlistId);
     }
 }

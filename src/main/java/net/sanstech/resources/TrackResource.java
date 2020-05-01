@@ -1,7 +1,7 @@
 package net.sanstech.resources;
 
 import com.mysql.cj.util.StringUtils;
-import net.sanstech.persistence.impl.TrackDAOImpl;
+import net.sanstech.service.TrackService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 public class TrackResource {
 
     @Inject
-    private TrackDAOImpl trackDAOImpl;
+    private TrackService trackService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +24,6 @@ public class TrackResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Response.ok().entity(trackDAOImpl.getAllTracksForPlaylist(forPlaylist)).build();
+        return Response.ok().entity(trackService.getAllTracksForPlaylist(forPlaylist)).build();
     }
-
 }
