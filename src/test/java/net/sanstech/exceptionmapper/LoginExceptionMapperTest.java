@@ -19,7 +19,7 @@ class LoginExceptionMapperTest {
     }
 
     @Test
-    void toResponse_returnsUnauthorizedAndHasError() {
+    void toResponse_returnsUnauthorizedAndHasErrorDTO() {
         // Init
         String msg = "message";
 
