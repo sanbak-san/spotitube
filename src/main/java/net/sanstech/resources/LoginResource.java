@@ -20,9 +20,6 @@ public class LoginResource {
 
     private final LoginExceptionMapper loginExceptionMapper = new LoginExceptionMapper();
 
-    public LoginResource() {
-    }
-
     @Inject
     public LoginResource(final AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
@@ -34,7 +31,7 @@ public class LoginResource {
     public Response loginUser(final UserDTO user) {
         try {
             return Response.ok().entity(authenticationService.login(user.getUser(), user.getPassword())).build();
-        } catch (SpotitubeLoginException e) {
+        } catch (final SpotitubeLoginException e) {
             return loginExceptionMapper.toResponse(e);
         }
     }

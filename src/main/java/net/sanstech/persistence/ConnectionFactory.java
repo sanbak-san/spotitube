@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Properties;
 
 public class ConnectionFactory {
@@ -21,12 +22,12 @@ public class ConnectionFactory {
     }
 
     private Properties getProperties() {
-        Properties properties = new Properties();
-        String propertiesPath = getClass().getClassLoader().getResource("").getPath() + "database.properties";
+        final Properties properties = new Properties();
+        final String propertiesPath = Objects.requireNonNull(getClass().getClassLoader().getResource("")).getPath() + "database.properties";
         try {
-            FileInputStream fileInputStream = new FileInputStream(propertiesPath);
+            final FileInputStream fileInputStream = new FileInputStream(propertiesPath);
             properties.load(fileInputStream);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             properties.setProperty("db.url", DB_URL);
             properties.setProperty("db.user", DB_USER);
             properties.setProperty("db.pass", DB_PASS);
@@ -41,7 +42,7 @@ public class ConnectionFactory {
         loadDriver();
         try {
             return DriverManager.getConnection(properties.getProperty("db.url"), properties.getProperty("db.user"), properties.getProperty("db.pass"));
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
 
@@ -50,7 +51,7 @@ public class ConnectionFactory {
     private void loadDriver() {
         try {
             Class.forName(properties.getProperty("db.driver")).newInstance();
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+        } catch (final IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

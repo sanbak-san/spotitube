@@ -16,7 +16,7 @@ public class TrackSummaryDTO {
         return tracks;
     }
 
-    public void setPlaylists(List<TrackDTO> tracks) {
+    public void setTracks(List<TrackDTO> tracks) {
         this.tracks = tracks;
     }
 }
