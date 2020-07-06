@@ -1,5 +1,10 @@
 package net.sanstech.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class TokenDTO {
     private String token;
     private String user;
@@ -15,21 +20,5 @@ public class TokenDTO {
     public TokenDTO(UserDTO user) {
         this.token = "123-456-789";
         this.user = user.getUser();
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 }

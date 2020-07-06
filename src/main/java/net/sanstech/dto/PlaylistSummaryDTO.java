@@ -1,8 +1,13 @@
 package net.sanstech.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class PlaylistSummaryDTO {
 
     private List<PlaylistDTO> playlists;
@@ -12,20 +17,7 @@ public class PlaylistSummaryDTO {
         playlists = new ArrayList<>();
     }
 
-    public List<PlaylistDTO> getPlaylists() {
-        return playlists;
+    public void incrementLength(final int duration) {
+        length += duration;
     }
-
-    public void setPlaylists(List<PlaylistDTO> playlists) {
-        this.playlists = playlists;
-    }
-
-    public float getLength() {
-        return length;
-    }
-
-    public void setLength(final int length) {
-        this.length = length;
-    }
-
 }
