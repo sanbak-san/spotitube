@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private TokenDAO tokenDAO;
 
     @Inject
-    private TokenGenerator tokenGenerator = new TokenGenerator();
+    private TokenGenerator tokenGenerator;
 
     public AuthenticationServiceImpl() {
     }

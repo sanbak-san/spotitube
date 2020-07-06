@@ -1,7 +1,8 @@
-package net.sanstech.service;
+package net.sanstech.service.impl;
 
 
 import net.sanstech.dto.TokenDTO;
+import net.sanstech.service.AuthenticationService;
 
 import javax.enterprise.inject.Alternative;
 
