@@ -1,8 +1,6 @@
 package net.sanstech.resources;
 
 import net.sanstech.dto.UserDTO;
-import net.sanstech.exception.SpotitubeLoginException;
-import net.sanstech.exceptionmapper.LoginExceptionMapper;
 import net.sanstech.service.AuthenticationService;
 
 import javax.inject.Inject;
@@ -18,7 +16,8 @@ public class LoginResource {
 
     private AuthenticationService authenticationService;
 
-    private final LoginExceptionMapper loginExceptionMapper = new LoginExceptionMapper();
+    public LoginResource() {
+    }
 
     @Inject
     public LoginResource(final AuthenticationService authenticationService) {
@@ -29,10 +28,6 @@ public class LoginResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response loginUser(final UserDTO user) {
-        try {
-            return Response.ok().entity(authenticationService.login(user.getUser(), user.getPassword())).build();
-        } catch (final SpotitubeLoginException e) {
-            return loginExceptionMapper.toResponse(e);
-        }
+        return Response.ok().entity(authenticationService.login(user.getUser(), user.getPassword())).build();
     }
 }
