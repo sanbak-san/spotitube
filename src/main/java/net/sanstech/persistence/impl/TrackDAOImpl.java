@@ -6,6 +6,7 @@ import net.sanstech.exception.SpotitubePersistenceException;
 import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.TrackDAO;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,8 @@ import java.sql.SQLException;
 
 public class TrackDAOImpl implements TrackDAO {
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    @Inject
+    private ConnectionFactory connectionFactory;
 
     @Override
     public TrackSummaryDTO getAllTracksFromPlaylist(final int playlistId) {

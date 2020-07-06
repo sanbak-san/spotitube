@@ -7,6 +7,7 @@ import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.TokenDAO;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,8 @@ public class TokenDAOImpl implements TokenDAO {
     private static final String SELECT_FROM_TOKENS_WHERE_USER = "SELECT * FROM tokens WHERE user=?";
     private static final String SELECT_FROM_TOKENS_WHERE_TOKEN = "SELECT * FROM tokens WHERE token=?";
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    @Inject
+    private ConnectionFactory connectionFactory;
 
     @Override
     public TokenDTO getToken(final UserDTO user) {

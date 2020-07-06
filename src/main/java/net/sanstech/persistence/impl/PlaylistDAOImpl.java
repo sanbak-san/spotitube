@@ -6,40 +6,35 @@ import net.sanstech.dto.TokenDTO;
 import net.sanstech.exception.SpotitubePersistenceException;
 import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.PlaylistDAO;
+import net.sanstech.persistence.TrackDAO;
+import net.sanstech.util.PlaylistMapper;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 @Default
 public class PlaylistDAOImpl implements PlaylistDAO {
     private static final String DELETE_FROM_PLAYLISTS_WHERE_ID = "DELETE FROM playlists WHERE id=?";
-    private static final String SELECT_FROM_PLAYLISTS_WHERE_ID = "SELECT * FROM playlists WHERE id=?";
     private static final String INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES = "INSERT INTO playlists (name, owner) VALUES (?,?)";
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
-    private final TrackDAOImpl trackDAOImpl = new TrackDAOImpl();
+    @Inject
+    private ConnectionFactory connectionFactory;
+
+    @Inject
+    private TrackDAO trackDAO;
 
     @Override
     public PlaylistSummaryDTO getAllPlaylists(final TokenDTO tokenDTO) {
         try (
+                // TODO: Try with resources lostrekken voor Single Responsability
                 final Connection connection = connectionFactory.getConnection();
                 final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlists")
         ) {
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                final PlaylistSummaryDTO playlists = new PlaylistSummaryDTO();
-                while (resultSet.next()) {
-                    playlists.getPlaylists().add(
-                            new PlaylistDTO(resultSet.getInt("id"),
-                                    resultSet.getString("name"),
-                                    tokenDTO.getUser().equals(resultSet.getString("owner")),
-                                    trackDAOImpl.getAllTracksFromPlaylist(resultSet.getInt("id")).getTracks()));
-                }
-                return playlists;
-            }
+            // TODO: Klasse PlaylistMapper maken en daar onderstaande methode
+            return PlaylistMapper.getPlaylistsFromResultSet(preparedStatement.executeQuery(), tokenDTO, trackDAO);
         } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }

@@ -6,6 +6,7 @@ import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.UserDAO;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,8 @@ import java.sql.SQLException;
 @Default
 public class UserDAOImpl implements UserDAO {
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    @Inject
+    private ConnectionFactory connectionFactory;
 
     @Override
     public UserDTO getUser(final String username, final String password) {
