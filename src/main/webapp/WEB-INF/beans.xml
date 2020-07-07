@@ -7,6 +7,6 @@
         bean-discovery-mode="all">
 
 <!--    <alternatives>-->
-<!--        <class>net.sanstech.service.LocalAuthenticationService</class>-->
+<!--        <class>net.sanstech.service.impl.LocalAuthenticationService</class>-->
 <!--    </alternatives>-->
 </beans>
