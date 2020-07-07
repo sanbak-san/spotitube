@@ -10,6 +10,4 @@ public interface TokenDAO {
     TokenDTO getToken(String token);
 
     TokenDTO insertToken(String token, UserDTO user);
-
-    boolean isValid(TokenDTO tokenDTO);
 }

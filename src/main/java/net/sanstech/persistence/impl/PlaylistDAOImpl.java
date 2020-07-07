@@ -4,14 +4,13 @@ import net.sanstech.dto.PlaylistDTO;
 import net.sanstech.dto.PlaylistSummaryDTO;
 import net.sanstech.dto.TokenDTO;
 import net.sanstech.exception.SpotitubePersistenceException;
-import net.sanstech.persistence.ConnectionFactory;
 import net.sanstech.persistence.PlaylistDAO;
 import net.sanstech.persistence.TrackDAO;
-import net.sanstech.util.PlaylistMapper;
+import net.sanstech.util.ResultSetMapper;
+import net.sanstech.util.SqlConnector;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -21,20 +20,17 @@ public class PlaylistDAOImpl implements PlaylistDAO {
     private static final String INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES = "INSERT INTO playlists (name, owner) VALUES (?,?)";
 
     @Inject
-    private ConnectionFactory connectionFactory;
+    private TrackDAO trackDAO;
 
     @Inject
-    private TrackDAO trackDAO;
+    private SqlConnector sqlConnector;
 
     @Override
     public PlaylistSummaryDTO getAllPlaylists(final TokenDTO tokenDTO) {
         try (
-                // TODO: Try with resources lostrekken voor Single Responsability
-                final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlists")
+                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM playlists")
         ) {
-            // TODO: Klasse PlaylistMapper maken en daar onderstaande methode
-            return PlaylistMapper.getPlaylistsFromResultSet(preparedStatement.executeQuery(), tokenDTO, trackDAO);
+            return ResultSetMapper.getPlaylistsFromResultSet(preparedStatement.executeQuery(), tokenDTO, trackDAO);
         } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
@@ -43,8 +39,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
     @Override
     public void deletePlaylist(final int id) {
         try (
-                final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FROM_PLAYLISTS_WHERE_ID)
+                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(DELETE_FROM_PLAYLISTS_WHERE_ID)
         ) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
@@ -56,8 +51,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
     @Override
     public void addPlaylist(final TokenDTO tokenDTO, final PlaylistDTO playlistDTO) {
         try (
-                final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES)
+                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES)
         ) {
             preparedStatement.setString(1, playlistDTO.getName());
             preparedStatement.setString(2, tokenDTO.getUser());
@@ -70,8 +64,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
     @Override
     public void editPlaylist(final PlaylistDTO playlistDTO) {
         try (
-                final Connection connection = connectionFactory.getConnection();
-                final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE playlists SET name =? WHERE id =?")
+                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("UPDATE playlists SET name =? WHERE id =?")
         ) {
             preparedStatement.setString(1, playlistDTO.getName());
             preparedStatement.setString(2, String.valueOf(playlistDTO.getId()));
