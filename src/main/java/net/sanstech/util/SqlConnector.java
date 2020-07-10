@@ -8,22 +8,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class SqlConnector {
+public class SqlConnector implements AutoCloseable {
 
     @Inject
     private ConnectionFactory connectionFactory;
 
-    private final Connection connection;
+    private Connection connection;
 
     public SqlConnector() {
-        connection = connectionFactory.getConnection();
     }
 
     public PreparedStatement getPreparedStatement(final String statement) {
         try {
+            connection = connectionFactory.getConnection();
             return connection.prepareStatement(statement);
         } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
+    }
+
+
+    @Override
+    public void close() throws Exception {
+        connection.close();
     }
 }
