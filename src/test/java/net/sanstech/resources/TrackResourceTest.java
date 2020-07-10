@@ -1,7 +1,9 @@
 package net.sanstech.resources;
 
 import net.sanstech.dto.TrackSummaryDTO;
+import net.sanstech.exception.SpotitubeTokenException;
 import net.sanstech.service.TrackService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,18 +23,20 @@ class TrackResourceTest {
     TrackService trackService;
 
     @InjectMocks
-    TrackResource sut = new TrackResource();
+    TrackResource sut;
+
+    @BeforeEach
+    void setup() {
+        sut = new TrackResource(trackService);
+    }
 
     @Test
-    void getAllTracks_withEmptyToken_returnsBadRequest() {
+    void getAllTracks_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.getAllTracks(token, 0);
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.getAllTracks(token, 0));
     }
 
     @Test

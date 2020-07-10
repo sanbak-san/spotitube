@@ -1,6 +1,5 @@
 package net.sanstech.resources;
 
-import net.sanstech.dto.ErrorDTO;
 import net.sanstech.dto.TokenDTO;
 import net.sanstech.dto.UserDTO;
 import net.sanstech.exception.SpotitubeLoginException;
@@ -13,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,11 +58,6 @@ class LoginResourceTest {
         when(authenticationService.login(username, password)).thenThrow(new SpotitubeLoginException(""));
 
         // Call
-        Response result = sut.loginUser(user);
-
-        // Assert
-        verify(authenticationService, times(1)).login(username, password);
-        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), result.getStatus());
-        assertTrue(result.getEntity() instanceof ErrorDTO);
+        assertThrows(SpotitubeLoginException.class, () -> sut.loginUser(user));
     }
 }

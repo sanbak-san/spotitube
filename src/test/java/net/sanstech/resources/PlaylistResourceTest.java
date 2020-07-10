@@ -4,19 +4,18 @@ import net.sanstech.dto.PlaylistDTO;
 import net.sanstech.dto.PlaylistSummaryDTO;
 import net.sanstech.dto.TrackDTO;
 import net.sanstech.dto.TrackSummaryDTO;
+import net.sanstech.exception.SpotitubeTokenException;
 import net.sanstech.service.PlaylistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,19 +24,20 @@ class PlaylistResourceTest {
     @Mock
     PlaylistService playlistService;
 
-    @InjectMocks
-    PlaylistResource sut = new PlaylistResource();
+    PlaylistResource sut;
+
+    @BeforeEach
+    void setup() {
+        sut = new PlaylistResource(playlistService);
+    }
 
     @Test
-    void showAllPlaylists_withEmptyToken_returnsBadRequest() {
+    void showAllPlaylists_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.showAllPlaylists(token);
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.showAllPlaylists(token));
     }
 
     @Test
@@ -57,15 +57,12 @@ class PlaylistResourceTest {
     }
 
     @Test
-    void deletePlaylist_withEmptyToken_returnsBadRequest() {
+    void deletePlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.deletePlaylist(token, 0);
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.deletePlaylist(token, 0));
     }
 
     @Test
@@ -86,15 +83,12 @@ class PlaylistResourceTest {
     }
 
     @Test
-    void addPlaylist_withEmptyToken_returnsBadRequest() {
+    void addPlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.addPlaylist(token, new PlaylistDTO());
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.addPlaylist(token, new PlaylistDTO()));
     }
 
     @Test
@@ -115,15 +109,12 @@ class PlaylistResourceTest {
     }
 
     @Test
-    void updatePlaylistName_withEmptyToken_returnsBadRequest() {
+    void updatePlaylistName_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.updatePlaylistName(token, new PlaylistDTO());
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.updatePlaylistName(token, new PlaylistDTO()));
     }
 
     @Test
@@ -144,15 +135,12 @@ class PlaylistResourceTest {
     }
 
     @Test
-    void getTracksForPlaylist_withEmptyToken_returnsBadRequest() {
+    void getTracksForPlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.getTracksForPlaylist(token, 0);
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.getTracksForPlaylist(token, 0));
     }
 
     @Test
@@ -173,15 +161,12 @@ class PlaylistResourceTest {
     }
 
     @Test
-    void addTrackToPlaylist_withEmptyToken_returnsBadRequest() {
+    void addTrackToPlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.addTrackToPlaylist(token, 0, new TrackDTO());
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.addTrackToPlaylist(token, 0, new TrackDTO()));
     }
 
     @Test
@@ -203,15 +188,12 @@ class PlaylistResourceTest {
     }
 
     @Test
-    void removeTrackFromPlaylist_withEmptyToken_returnsBadRequest() {
+    void removeTrackFromPlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
 
-        // Call
-        Response result = sut.removeTrackFromPlaylist(token, 0, 0);
-
-        // Assert
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), result.getStatus());
+        // Call & Assert
+        assertThrows(SpotitubeTokenException.class, () -> sut.removeTrackFromPlaylist(token, 0, 0));
     }
 
     @Test
