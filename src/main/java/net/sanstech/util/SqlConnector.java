@@ -13,9 +13,14 @@ public class SqlConnector {
     @Inject
     private ConnectionFactory connectionFactory;
 
+    private final Connection connection;
+
+    public SqlConnector() {
+        connection = connectionFactory.getConnection();
+    }
+
     public PreparedStatement getPreparedStatement(final String statement) {
         try {
-            final Connection connection = connectionFactory.getConnection();
             return connection.prepareStatement(statement);
         } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
