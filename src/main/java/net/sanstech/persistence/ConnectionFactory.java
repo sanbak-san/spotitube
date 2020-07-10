@@ -22,7 +22,8 @@ public class ConnectionFactory {
     }
 
     private Properties getProperties() {
-        final Properties properties = new Properties();
+        properties = new Properties();
+
         final String propertiesPath = Objects.requireNonNull(getClass().getClassLoader().getResource("")).getPath() + "database.properties";
         try {
             final FileInputStream fileInputStream = new FileInputStream(propertiesPath);
