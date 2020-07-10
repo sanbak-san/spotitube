@@ -57,4 +57,15 @@ public class ResultSetMapper {
 
         return null;
     }
+
+    public static TokenDTO getTokenFromResultSet(final ResultSet resultSet) throws SQLException {
+        final TokenDTO tokenDTO = new TokenDTO();
+
+        if (resultSet.next()) {
+            tokenDTO.setUser(resultSet.getString("user"));
+            tokenDTO.setToken(resultSet.getString("token"));
+        }
+
+        return tokenDTO;
+    }
 }
