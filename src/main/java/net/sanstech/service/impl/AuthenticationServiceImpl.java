@@ -23,9 +23,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private TokenGenerator tokenGenerator;
 
-    public AuthenticationServiceImpl() {
-    }
-
     @Override
     public TokenDTO login(final String username, final String password) {
         final UserDTO user = userDAO.getUser(username, password);
