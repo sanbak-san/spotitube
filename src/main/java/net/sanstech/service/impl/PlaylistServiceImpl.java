@@ -31,14 +31,15 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public PlaylistSummaryDTO deletePlaylist(final String token, final int id) {
         playlistDAO.deletePlaylist(id);
+
         return getAllPlaylists(token);
     }
 
     @Override
     public PlaylistSummaryDTO addPlaylist(final String token, final PlaylistDTO playlistDTO) {
         final TokenDTO tokenDTO = tokenDAO.getToken(token);
-
         playlistDAO.addPlaylist(tokenDTO, playlistDTO);
+
         return getAllPlaylists(token);
     }
 
