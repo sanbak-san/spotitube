@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ResultSetMapper {
+
+    private ResultSetMapper() {
+    }
+
     public static PlaylistSummaryDTO getPlaylistsFromResultSet(final ResultSet resultSet, final TokenDTO tokenDTO, final TrackDAO trackDAO) throws SQLException {
         final PlaylistSummaryDTO playlists = new PlaylistSummaryDTO();
         while (resultSet.next()) {
