@@ -27,9 +27,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 
     @Override
     public PlaylistSummaryDTO getAllPlaylists(final TokenDTO tokenDTO) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM playlists")
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM playlists");
             return ResultSetMapper.getPlaylistsFromResultSet(preparedStatement.executeQuery(), tokenDTO, trackDAO);
         } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
@@ -38,9 +37,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 
     @Override
     public void deletePlaylist(final int id) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(DELETE_FROM_PLAYLISTS_WHERE_ID)
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(DELETE_FROM_PLAYLISTS_WHERE_ID);
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
         } catch (final SQLException e) {
@@ -50,9 +48,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 
     @Override
     public void addPlaylist(final TokenDTO tokenDTO, final PlaylistDTO playlistDTO) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES)
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(INSERT_INTO_PLAYLISTS_NAME_OWNER_VALUES);
             preparedStatement.setString(1, playlistDTO.getName());
             preparedStatement.setString(2, tokenDTO.getUser());
             preparedStatement.execute();
@@ -63,9 +60,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 
     @Override
     public void editPlaylist(final PlaylistDTO playlistDTO) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("UPDATE playlists SET name =? WHERE id =?")
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("UPDATE playlists SET name =? WHERE id =?");
             preparedStatement.setString(1, playlistDTO.getName());
             preparedStatement.setString(2, String.valueOf(playlistDTO.getId()));
             preparedStatement.execute();

@@ -23,9 +23,8 @@ public class TokenDAOImpl implements TokenDAO {
 
     @Override
     public TokenDTO getToken(final UserDTO user) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(SELECT_FROM_TOKENS_WHERE_USER)
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(SELECT_FROM_TOKENS_WHERE_USER);
             preparedStatement.setString(1, user.getUser());
 
             return ResultSetMapper.getTokenFromResultSet(preparedStatement.executeQuery());
@@ -36,9 +35,8 @@ public class TokenDAOImpl implements TokenDAO {
 
     @Override
     public TokenDTO getToken(final String token) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(SELECT_FROM_TOKENS_WHERE_TOKEN)
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(SELECT_FROM_TOKENS_WHERE_TOKEN);
             preparedStatement.setString(1, token);
 
             return ResultSetMapper.getTokenFromResultSet(preparedStatement.executeQuery());
@@ -49,9 +47,8 @@ public class TokenDAOImpl implements TokenDAO {
 
     @Override
     public TokenDTO insertToken(final String token, final UserDTO user) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(INSERT_INTO_TOKENS_TOKEN_USER_VALUES)
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement(INSERT_INTO_TOKENS_TOKEN_USER_VALUES);
             preparedStatement.setString(1, token);
             preparedStatement.setString(2, user.getUser());
             preparedStatement.execute();

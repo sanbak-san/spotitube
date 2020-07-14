@@ -19,9 +19,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public UserDTO getUser(final String username, final String password) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM account WHERE user=? AND password=?");
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM account WHERE user=? AND password=?");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 

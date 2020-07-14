@@ -18,9 +18,8 @@ public class TrackDAOImpl implements TrackDAO {
 
     @Override
     public TrackSummaryDTO getAllTracksFromPlaylist(final int playlistId) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM tracks WHERE id IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM tracks WHERE id IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
             preparedStatement.setString(1, String.valueOf(playlistId));
 
             return ResultSetMapper.getTracksFromResultSet(preparedStatement.executeQuery());
@@ -31,9 +30,8 @@ public class TrackDAOImpl implements TrackDAO {
 
     @Override
     public TrackSummaryDTO getAllTracksForPlaylist(final int playlistId) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM tracks WHERE id NOT IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("SELECT * FROM tracks WHERE id NOT IN (SELECT track_id FROM tracks_in_playlists WHERE playlist_id =?)");
             preparedStatement.setString(1, String.valueOf(playlistId));
 
             return ResultSetMapper.getTracksFromResultSet(preparedStatement.executeQuery());
@@ -44,9 +42,8 @@ public class TrackDAOImpl implements TrackDAO {
 
     @Override
     public void addTrackToPlaylist(final int playlistId, final TrackDTO trackDTO) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("INSERT INTO tracks_in_playlists (track_id, playlist_id, offline_available) VALUES (?,?,?)")
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("INSERT INTO tracks_in_playlists (track_id, playlist_id, offline_available) VALUES (?,?,?)");
             preparedStatement.setInt(1, trackDTO.getId());
             preparedStatement.setInt(2, playlistId);
             preparedStatement.setBoolean(3, trackDTO.isOfflineAvailable());
@@ -58,9 +55,8 @@ public class TrackDAOImpl implements TrackDAO {
 
     @Override
     public void removeTrackFromPlaylist(final int playlistId, final int trackId) {
-        try (
-                final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("DELETE FROM tracks_in_playlists WHERE track_id=? AND playlist_id=?")
-        ) {
+        try {
+            final PreparedStatement preparedStatement = sqlConnector.getPreparedStatement("DELETE FROM tracks_in_playlists WHERE track_id=? AND playlist_id=?");
             preparedStatement.setInt(1, trackId);
             preparedStatement.setInt(2, playlistId);
             preparedStatement.execute();
