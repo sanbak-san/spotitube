@@ -28,7 +28,7 @@ public class TokenDAOImpl implements TokenDAO {
             preparedStatement.setString(1, user.getUser());
 
             return ResultSetMapper.getTokenFromResultSet(preparedStatement.executeQuery());
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
@@ -40,7 +40,7 @@ public class TokenDAOImpl implements TokenDAO {
             preparedStatement.setString(1, token);
 
             return ResultSetMapper.getTokenFromResultSet(preparedStatement.executeQuery());
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
@@ -54,7 +54,7 @@ public class TokenDAOImpl implements TokenDAO {
             preparedStatement.execute();
 
             return new TokenDTO(token, user.getName());
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new SpotitubePersistenceException(e);
         }
     }
