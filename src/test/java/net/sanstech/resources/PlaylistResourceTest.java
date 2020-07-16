@@ -86,9 +86,10 @@ class PlaylistResourceTest {
     void addPlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
+        PlaylistDTO playlistDTO = new PlaylistDTO();
 
         // Call & Assert
-        assertThrows(SpotitubeTokenException.class, () -> sut.addPlaylist(token, new PlaylistDTO()));
+        assertThrows(SpotitubeTokenException.class, () -> sut.addPlaylist(token, playlistDTO));
     }
 
     @Test
@@ -112,9 +113,10 @@ class PlaylistResourceTest {
     void updatePlaylistName_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
+        PlaylistDTO playlistDTO = new PlaylistDTO();
 
         // Call & Assert
-        assertThrows(SpotitubeTokenException.class, () -> sut.updatePlaylistName(token, new PlaylistDTO()));
+        assertThrows(SpotitubeTokenException.class, () -> sut.updatePlaylistName(token, playlistDTO));
     }
 
     @Test
@@ -164,9 +166,10 @@ class PlaylistResourceTest {
     void addTrackToPlaylist_withEmptyToken_throwsSpotitubeTokenException() {
         // Init
         String token = "";
+        TrackDTO trackDTO = new TrackDTO();
 
         // Call & Assert
-        assertThrows(SpotitubeTokenException.class, () -> sut.addTrackToPlaylist(token, 0, new TrackDTO()));
+        assertThrows(SpotitubeTokenException.class, () -> sut.addTrackToPlaylist(token, 0, trackDTO));
     }
 
     @Test
