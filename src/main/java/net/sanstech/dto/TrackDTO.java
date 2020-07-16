@@ -15,8 +15,4 @@ public class TrackDTO {
     private String description;
     private boolean offlineAvailable;
     private int duration;
-
-
-    public TrackDTO() {
-    }
 }
