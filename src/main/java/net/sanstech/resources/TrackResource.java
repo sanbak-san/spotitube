@@ -21,7 +21,7 @@ public class TrackResource {
     }
 
     @Inject
-    public TrackResource(TrackService trackService) {
+    public TrackResource(final TrackService trackService) {
         this.trackService = trackService;
     }
 
